@@ -4,6 +4,7 @@ from tkinter import messagebox
 import hashlib as hl
 import datetime as dt
 import time
+from colorama import Fore, Style
 
 #=================variable=============================================================================================================================
 
@@ -108,15 +109,30 @@ def statusblock():
     if(index == 0):
         output_label.configure(text="Block don't found!!!!")
     elif(index > 0):
+        current_hash = []
+        pre_hash = []
+        for i in block:
+            current_hash.append(i[3])
+            pre_hash.append(i[2])
         num = 0
         blockdraw = ''
-        while(num != index):
+        blockterminal = ''
+        while(num != index):                
+            if (num+1 < index):      
+                if(current_hash[num] == pre_hash[num+1]):
+                    blockterminal += '| Block #'+ str(num) + ' |'
+                elif(current_hash[num] != pre_hash[num+1]):
+                    red = Fore.RED + '| Block #'+ str(num) + ' |'
+                    red_reset = Style.RESET_ALL
+                    blockterminal += red + red_reset
+            elif (num+1 == index):
+                blockterminal += '| Block #'+ str(num) + ' |'
             blockdraw += '| Block #'+ str(num) + ' |'
             num+=1
             if(num != index):
                 blockdraw += '<--'
         output_label.configure(text=blockdraw)
-    
+        print(blockterminal)
             
 def searchblock():
     cleanlabel()
